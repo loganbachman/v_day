@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffb6c1;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #4a4a4a;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .gif-container {
+            margin: 30px 0;
+        }
+
+        .gif-container img {
+            max-width: 400px;
+            width: 90%;
+            border-radius: 10px;
+        }
+
+        .button-container {
+            margin-top: 40px;
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            min-height: 80px;
+            align-items: center;
+        }
+
+        button {
+            font-size: 1.3em;
+            padding: 12px 35px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        #yesBtn {
+            background: white;
+            color: #ff69b4;
+            border: 3px solid #ff69b4;
+            transition: all 0.3s ease;
+        }
+
+        #yesBtn.moving {
+            position: fixed;
+        }
+
+        #noBtn {
+            background: #ff69b4;
+            color: white;
+            border: 3px solid #ff69b4;
+        }
+
+        #noBtn:hover {
+            background: #ff1493;
+            border-color: #ff1493;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #startBtn {
+            background: white;
+            color: #ff69b4;
+            border: 3px solid #ff69b4;
+            font-size: 1.8em;
+            padding: 18px 50px;
+            border-radius: 8px;
+        }
+
+        #startBtn:hover {
+            background: #fff0f5;
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgMusic" loop>
+        <source src="snooze_sza.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        <!-- Intro Page -->
+        <div id="intro">
+            <h1>Hi Maleah!!!!</h1>
+            <div class="gif-container">
+                <img src="hi_cat.gif" alt="gif">
+            </div>
+            <button id="startBtn">Meow</button>
+        </div>
+
+        <!-- Question Page -->
+        <div id="question" class="hidden">
+            <h1>Will you be my valentine?!?? &lt3</h1>
+            <div class="gif-container">
+                <img src="cat_kissing.gif" alt="gif">
+            </div>
+            <div class="button-container">
+                <button id="yesBtn">Yes</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+
+        <!-- Final Page -->
+        <div id="final" class="hidden">
+            <h1>Yayyyyyy!!!!!!!!!!!</h1>
+            <div class="gif-container">
+                <img src="happy_cat.gif" alt="gif">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const intro = document.getElementById('intro');
+        const question = document.getElementById('question');
+        const final = document.getElementById('final');
+        const startBtn = document.getElementById('startBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const bgMusic = document.getElementById('bgMusic');
+
+        let moveCount = 0;
+        const maxMoves = 5;
+        
+        startBtn.addEventListener('click', function() {
+            bgMusic.play();
+            intro.classList.add('hidden');
+            question.classList.remove('hidden');
+
+            // Prevent immediate hover
+            // Move mouse position check
+            const rect = yesBtn.getBoundingClientRect();
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+    
+            // If mouse would be over yes button, move it immediately
+            if (mouseX >= rect.left && mouseX <= rect.right && 
+                mouseY >= rect.top && mouseY <= rect.bottom) {
+                yesBtn.classList.add('moving');
+                const pos = getRandomPosition();
+                yesBtn.style.left = pos.x + 'px';
+            yesBtn.style.top = pos.y + 'px';
+            moveCount++;
+            }
+        });
+
+        function getRandomPosition() {
+            const buttonWidth = yesBtn.offsetWidth;
+            const buttonHeight = yesBtn.offsetHeight;
+            
+            const maxX = window.innerWidth - buttonWidth - 40;
+            const maxY = window.innerHeight - buttonHeight - 40;
+            
+            const x = Math.max(20, Math.random() * maxX);
+            const y = Math.max(20, Math.random() * maxY);
+            
+            return { x, y };
+        }
+
+        yesBtn.addEventListener('mouseenter', function() {
+            if (moveCount < maxMoves) {
+                moveCount++;
+                yesBtn.classList.add('moving');
+                
+                const pos = getRandomPosition();
+                yesBtn.style.left = pos.x + 'px';
+                yesBtn.style.top = pos.y + 'px';
+            }
+        });
+
+        yesBtn.addEventListener('click', function(e) {
+            if (moveCount < maxMoves) {
+                e.preventDefault();
+                moveCount++;
+                yesBtn.classList.add('moving');
+                
+                const pos = getRandomPosition();
+                yesBtn.style.left = pos.x + 'px';
+                yesBtn.style.top = pos.y + 'px';
+            } else {
+                showFinal();
+            }
+        });
+
+        noBtn.addEventListener('click', function() {
+            nnoBtn.style.display = 'none';
+        });
+
+        function showFinal() {
+            question.classList.add('hidden');
+            final.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
